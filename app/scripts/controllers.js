@@ -1,5 +1,5 @@
 'use strict';
-angular.module('CostSplit.controllers', [])
+angular.module('CostSplit.controllers', ['ionic', 'ionic.utils', "slugifier" ])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   // Form data for the login modal
@@ -34,21 +34,56 @@ angular.module('CostSplit.controllers', [])
   }
 })
 
-.controller('EventsCtrl', function($scope) {
+.controller('EventsCtrl', function($scope, $localstorage) {
   $scope.events = [
     { title: 'Birthday', id: 1 },
     { title: 'Dinner', id: 2 },
   ];
+  console.log($localstorage.get('name'));
 })
 
 .controller('EventCtrl', function($scope, $stateParams) {
 })
 
-.controller('EventsNewCtrl', function($scope, $stateParams, $location) {
+.controller('EventsNewCtrl', function($scope, $stateParams, $location, Slug, $localstorage) {
   $scope.eventData = {};
 
   $scope.newEvent = function() {
-    console.log('Create Event', $scope.eventData);
-    $location.path('/app/events').replace();
+    var name = $scope.eventData.name;
+    // console.log('Create Event', $scope.eventData);
+    // console.log('Slug: ', Slug.slugify($scope.eventData.name));
+    if((typeof name != 'undefined') && name !== ''){
+      var slug = Slug.slugify($scope.eventData.name);
+
+      $localstorage.setObject(slug, {
+        name: name
+      });
+
+      if((typeof $localstorage.get('events') != 'undefined')){
+        var events = $localstorage.get('events');
+      } else {
+        var events = '';
+      }
+
+      var addition = ' ';
+      if (events !== '') { addition = ',' };
+      events += addition + slug;
+      $localstorage.set('events', events);
+
+    } else {
+      alert("oh boy");
+    }
+
+
+    // $localstorage.set('name', 'Max');
+    // console.log($localstorage.get('name'));
+    // $localstorage.setObject('post', {
+    //   name: 'Thoughts',
+    //   text: 'Today was a good day'
+    // });
+
+    // var post = $localstorage.getObject('post');
+    // console.log(post, post.name);
+    // $location.path('/app/events').replace();
   }
 });
