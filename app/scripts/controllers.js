@@ -1,5 +1,69 @@
 'use strict';
-angular.module('CostSplit.controllers', ['ionic', 'ionic.utils', "slugifier" ])
+
+var EventCreator = function (storageEngine, slugGenerator) {
+    this.storageEngine = storageEngine;
+    this.slugGenerator = slugGenerator;
+
+    var create = function (name, errorCb) {
+        if((typeof name != 'undefined') && name !== ''){
+          var slug = slugGenerator.slugify(name);
+
+          storageEngine.setObject(slug, {
+            name: name
+          });
+
+          if((typeof storageEngine.get('events') != 'undefined')){
+            var events = storageEngine.get('events');
+          } else {
+            var events = '';
+          }
+
+          var addition = ' ';
+          if (events !== '') { addition = ',' };
+          events += addition + slug;
+          storageEngine.set('events', events);
+
+        } else {
+          errorCb("oh boy");
+        }
+    }
+
+    return {
+        create: create
+    }
+};
+
+var LocalStorage = function (storageEngine) {
+  this.storageEngine = storageEngine;
+
+  var get = function (key) {
+    return this.storageEngine(key);
+  };
+
+  var set = function (key, value) {
+    this.storageEngine.set(key, value);
+  }
+
+  var setObject = function (key, value) {
+    this.storageEngine.setObject(key, value);
+  }
+
+  return {
+    'get': get,
+    'set': set,
+    'setObject': setObject
+  }
+};
+
+angular.module('CostSplit.controllers', ['ionic', 'ionic.utils', "slugifier", "LocalStorage" ])
+
+.factory("LocalStorage", ['$localstorage', function($localstorage) {
+    return new LocalStorage($localstorage);
+}])
+
+.factory("EventCreator", ['$localstorage', 'Slug', function($localstorage, Slug) {
+    return new EventCreator($localstorage, Slug);
+}])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   // Form data for the login modal
@@ -45,45 +109,12 @@ angular.module('CostSplit.controllers', ['ionic', 'ionic.utils', "slugifier" ])
 .controller('EventCtrl', function($scope, $stateParams) {
 })
 
-.controller('EventsNewCtrl', function($scope, $stateParams, $location, Slug, $localstorage) {
+.controller('EventsNewCtrl', function($scope, $stateParams, $location, EventCreator) {
   $scope.eventData = {};
 
   $scope.newEvent = function() {
-    var name = $scope.eventData.name;
-    // console.log('Create Event', $scope.eventData);
-    // console.log('Slug: ', Slug.slugify($scope.eventData.name));
-    if((typeof name != 'undefined') && name !== ''){
-      var slug = Slug.slugify($scope.eventData.name);
-
-      $localstorage.setObject(slug, {
-        name: name
-      });
-
-      if((typeof $localstorage.get('events') != 'undefined')){
-        var events = $localstorage.get('events');
-      } else {
-        var events = '';
-      }
-
-      var addition = ' ';
-      if (events !== '') { addition = ',' };
-      events += addition + slug;
-      $localstorage.set('events', events);
-
-    } else {
-      alert("oh boy");
-    }
-
-
-    // $localstorage.set('name', 'Max');
-    // console.log($localstorage.get('name'));
-    // $localstorage.setObject('post', {
-    //   name: 'Thoughts',
-    //   text: 'Today was a good day'
-    // });
-
-    // var post = $localstorage.getObject('post');
-    // console.log(post, post.name);
-    // $location.path('/app/events').replace();
+    var event_creator = EventCreator.create($scope.eventData.name, function (msg) {
+      alert(msg);
+    });
   }
 });
