@@ -39,10 +39,42 @@ angular.module('CostSplit.controllers', ['ionic', 'ionic.utils', "slugifier" ])
     { title: 'Birthday', id: 1 },
     { title: 'Dinner', id: 2 },
   ];
-  console.log($localstorage.get('name'));
+  // console.log($localstorage.get('name'));
 })
 
 .controller('EventCtrl', function($scope, $stateParams) {
+  $scope.name = 'Event Name'
+  $scope.users = [
+    { name: 'Will', id: 1 },
+    { name: 'Karl', id: 2 },
+    { name: 'Winston', id: 3 },
+  ];
+})
+
+.controller('UsersNewCtrl', function($scope, $localstorage) {
+  // console.log($localstorage.get('name'));
+})
+
+.controller('UserCtrl', function($scope, $stateParams) {
+  $scope.name = "Karl"
+  $scope.items = [
+    { name: 'Beer', id: 1 },
+    { name: 'Food', id: 2 },
+    { name: 'Gin', id: 3 },
+  ];
+})
+
+.controller('ItemsNewCtrl', function($scope, $localstorage) {
+  // console.log($localstorage.get('name'));
+})
+
+.controller('ItemCtrl', function($scope, $stateParams) {
+  $scope.name = "Beer"
+  $scope.users = [
+    { name: 'Will', id: 1 },
+    { name: 'Karl', id: 2 },
+    { name: 'Winston', id: 3 },
+  ];
 })
 
 .controller('EventsNewCtrl', function($scope, $stateParams, $location, Slug, $localstorage) {

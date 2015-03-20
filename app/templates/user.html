@@ -1,15 +1,14 @@
 <ion-view title="{{name}}">
   <ion-nav-buttons side="right">
-    <a class="button button-clear button-positive" href="#/app/users/new">New User</a>
+    <a class="button button-clear button-positive" href="#/app/items/new">New Item</a>
   </ion-nav-buttons>
 
   <ion-content class="has-header">
     <ion-list>
-      <ion-item class="item-icon-right" ng-repeat="user in users" href="#/app/users/{{user.id}}">
-        {{user.name}}
+      <ion-item class="item-icon-right" ng-repeat="item in items" href="#/app/items/{{item.id}}">
+        {{item.name}}
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
     </ion-list>
-
   </ion-content>
 </ion-view>

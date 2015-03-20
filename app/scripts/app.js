@@ -77,6 +77,46 @@ angular.module('CostSplit', ['ionic', 'config', 'CostSplit.controllers'])
           controller: 'EventCtrl'
         }
       }
+    })
+
+    .state('app.new_user', {
+      url: '/users/new',
+      views: {
+        'menuContent' :{
+          templateUrl: 'templates/users_new.html',
+          controller: 'UsersNewCtrl'
+        }
+      }
+    })
+
+    .state('app.user', {
+      url: '/users/:userId',
+      views: {
+        'menuContent' :{
+          templateUrl: 'templates/user.html',
+          controller: 'UserCtrl'
+        }
+      }
+    })
+
+    .state('app.new_item', {
+      url: '/items/new',
+      views: {
+        'menuContent' :{
+          templateUrl: 'templates/items_new.html',
+          controller: 'ItemsNewCtrl'
+        }
+      }
+    })
+
+    .state('app.item', {
+      url: '/items/:itemId',
+      views: {
+        'menuContent' :{
+          templateUrl: 'templates/item.html',
+          controller: 'ItemCtrl'
+        }
+      }
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/events');
