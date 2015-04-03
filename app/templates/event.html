@@ -7,6 +7,10 @@
     <ion-list>
       <ion-item class="item-icon-right" ng-repeat="user in users" href="#/app/users/{{user.id}}">
         {{user.name}}
+        <span class="item-note balanced">
+          <!-- assertive -->
+          $100
+        </span>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
     </ion-list>
