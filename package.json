@@ -52,5 +52,8 @@
     "org.apache.cordova.statusbar",
     "org.apache.cordova.console",
     "https://github.com/brodysoft/Cordova-SQLitePlugin"
+  ],
+  "cordovaPlatforms": [
+    "ios"
   ]
 }
